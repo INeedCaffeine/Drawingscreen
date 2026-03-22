@@ -9,9 +9,11 @@ import java.util.ArrayList;
 
 
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -416,7 +418,7 @@ public class FingerPaintActivity extends Activity implements
 			}
 			return true;
 		case CLEAR_MENU_ID:
-			mv.clear(720, 1280);
+			mv.clear(mv.getWidth(), mv.getHeight());
 			
 			centerx.clear();
 			centery.clear();
@@ -593,18 +595,20 @@ public class FingerPaintActivity extends Activity implements
 							String name = input.getText().toString();
 							
 							
-							 View content = mv;
 							 mv.setDrawingCacheEnabled(true);
 						    Bitmap bitmap = mv.getDrawingCache();
-						    File file = new File(Environment.getExternalStorageDirectory() + "/" + name + ".png");
-						    try 
+						    ContentValues values = new ContentValues();
+						    values.put(MediaStore.Images.Media.DISPLAY_NAME, name + ".png");
+						    values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+						    values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+						    Uri imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+						    try
 						    {
-						        file.createNewFile();
-						        FileOutputStream ostream = new FileOutputStream(file);
+						        OutputStream ostream = getContentResolver().openOutputStream(imageUri);
 						        bitmap.compress(CompressFormat.PNG, 100, ostream);
 						        ostream.close();
-						    } 
-						    catch (Exception e) 
+						    }
+						    catch (Exception e)
 						    {
 						        e.printStackTrace();
 						    }
