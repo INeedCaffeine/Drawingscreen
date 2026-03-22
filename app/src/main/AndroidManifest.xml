@@ -4,12 +4,6 @@
     android:versionCode="6"
     android:versionName="3.0" >
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
@@ -17,33 +11,36 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="screen.draw.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:exported="false" >
         </activity>
         <activity
             android:name="screen.draw.FingerPaintActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="FRC PlayMaker"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:exported="false" >
         </activity>
         <activity
             android:name="screen.draw.Splash"
-            android:label="FRC PlayMaker" >
+            android:label="FRC PlayMaker"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="screen.draw.About"
-            android:label="@string/title_activity_about" >
+            android:label="@string/title_activity_about"
+            android:exported="false" >
         </activity>
         <activity
             android:name="screen.draw.Test"
-             android:configChanges="orientation|keyboardHidden"
+            android:configChanges="orientation|keyboardHidden"
             android:label="FRC PlayMaker"
-            android:screenOrientation="portrait" >
-            }
+            android:screenOrientation="portrait"
+            android:exported="false" >
         </activity>
     </application>
 

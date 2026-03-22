@@ -1,23 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace 'screen.draw'
 
     lintOptions {
         checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
         abortOnError false
     }
 
-    compileSdkVersion 19
-    buildToolsVersion "21.1.2"
-
-
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "screen.draw"
-        minSdkVersion 8
-        targetSdkVersion 18
+        minSdkVersion 30
+        targetSdkVersion 33
     }
 
     buildTypes {
@@ -26,8 +22,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-}
 
-dependencies {
-    compile 'com.android.support:support-v4:19.1.0'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
