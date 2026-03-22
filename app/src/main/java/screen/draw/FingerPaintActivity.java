@@ -416,7 +416,7 @@ public class FingerPaintActivity extends Activity implements
 			}
 			return true;
 		case CLEAR_MENU_ID:
-			mv.clear(720, 1280);
+			mv.clear(mv.getWidth(), mv.getHeight());
 			
 			centerx.clear();
 			centery.clear();
