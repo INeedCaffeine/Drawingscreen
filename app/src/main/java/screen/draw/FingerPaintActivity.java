@@ -50,7 +50,7 @@ public class FingerPaintActivity extends Activity implements
 	AlertDialog dialog;
 	boolean saved = false;
 
-	public final int fieldPicture = R.drawable.strongholdfield2016;
+	public final int fieldPicture = R.drawable.rebuilt2026;
 	
 	boolean firsttime = false;
 	
