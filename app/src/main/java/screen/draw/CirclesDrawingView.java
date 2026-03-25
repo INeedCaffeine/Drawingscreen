@@ -100,20 +100,10 @@ public class CirclesDrawingView extends View {
 
     private void init(final Context ct) {
         // Generate bitmap used for background
-    	
-    	View e = FingerPaintActivity.mv.getRootView();
-        e.refreshDrawableState();
-        
-    	//mBitmap = ViewOverlay.this;//BitmapFactory.decodeResource(ct.getResources(), v);
-    	
-    	System.out.println("qwertghnjuytgfvbhj");
-    	
-    	mBitmap = getBitmapFromView(e);
-    	
-        //mBitmap = BitmapFactory.decodeResource(ct.getResources(), R.drawable.aerialassistfield1);
+        mBitmap = BitmapFactory.decodeResource(ct.getResources(), FingerPaintActivity.fieldPicture);
 
         mCirclePaint = new Paint();
-        
+
         mCirclePaint.setColor(Color.BLUE);
         mCirclePaint.setStrokeWidth(40);
         mCirclePaint.setStyle(Paint.Style.FILL);

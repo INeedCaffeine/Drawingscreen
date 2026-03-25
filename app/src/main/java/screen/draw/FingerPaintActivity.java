@@ -50,7 +50,7 @@ public class FingerPaintActivity extends Activity implements
 	AlertDialog dialog;
 	boolean saved = false;
 
-	public final int fieldPicture = R.drawable.rebuilt2026;
+	public static final int fieldPicture = R.drawable.rebuilt2026;
 	
 	boolean firsttime = false;
 	
@@ -498,22 +498,12 @@ public class FingerPaintActivity extends Activity implements
 				
 				w1++;
 			}*/
-			mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-			//mPaint.setColor(Color.BLACK);
-			
-			mPaint.setAlpha(0x80);
+			Paint clearPaint = new Paint();
+			clearPaint.setStyle(Paint.Style.FILL);
+			clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 			int w1 = 0;
 			while(w1<=centerx.size()-1) {
-				System.out.println("YOTYOYOYOOY");
-				//mPaint.setColor(Color.BLACK);
-				//mv.mCanvas.drawBitmap(mp, centerx.get(w), centery.get(w), mPaint);
-				int rad = 25;
-				while(rad>=0) {
-					System.out.println(rad);
-					mv.mCanvas.drawCircle(centerx.get(w1)+34, centery.get(w1)+34, rad, mPaint);
-					rad--;
-				}
-				
+				mv.mCanvas.drawCircle(centerx.get(w1), centery.get(w1), 30, clearPaint);
 				w1++;
 			}
 			
@@ -838,19 +828,16 @@ public class FingerPaintActivity extends Activity implements
 				//getWindowManager().addView(cdv, wlp);
 				
 				w = 0;
-				mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.ADD));
-				mPaint.setStrokeWidth(20);
-				//change balls to 40
+				Paint robotPaint = new Paint();
+				robotPaint.setAntiAlias(true);
+				robotPaint.setStyle(Paint.Style.FILL);
 				while(w<=centerx.size()-1) {
 					if(w>=3) {
-						mPaint.setColor(Color.RED);
-						mp = BitmapFactory.decodeResource(getResources(), R.drawable.circre);
-					} else if(w<3) {
-						mPaint.setColor(Color.BLUE);
-						mp = BitmapFactory.decodeResource(getResources(), R.drawable.circbl);
+						robotPaint.setColor(Color.RED);
+					} else {
+						robotPaint.setColor(Color.BLUE);
 					}
-					mv.mCanvas.drawBitmap(mp, centerx.get(w), centery.get(w), mPaint);
-					//mv.mCanvas.drawCircle(centerx.get(w), centery.get(w), radius.get(w), mPaint);
+					mv.mCanvas.drawCircle(centerx.get(w), centery.get(w), 30, robotPaint);
 					w++;
 				}
 				

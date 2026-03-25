@@ -25,8 +25,6 @@ public class Test extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-		getActionBar().hide();
 		setContentView(R.layout.activity_test);
 		
 		boolean yon = getIntent().getBooleanExtra("YES", false);
@@ -65,11 +63,13 @@ public class Test extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		ArrayList<CircleArea> ca = asdf.getList1();
+		centerx.clear();
+		centery.clear();
+		radius.clear();
 		for(CircleArea c : ca) {
 			centerx.add(c.centerX);
 			centery.add(c.centerY);
 			radius.add(c.radius);
-			System.out.println("here");
 		}
 		
 		
