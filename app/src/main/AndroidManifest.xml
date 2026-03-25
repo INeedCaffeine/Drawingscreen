@@ -10,11 +10,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="screen.draw.MainActivity"
-            android:label="@string/app_name"
-            android:exported="false" >
-        </activity>
-        <activity
             android:name="screen.draw.FingerPaintActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="FRC PlayMaker"

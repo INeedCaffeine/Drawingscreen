@@ -32,7 +32,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.RectF;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -439,41 +438,7 @@ public class FingerPaintActivity extends Activity implements
 			 * mPaint.setAlpha(0x80); return true;
 			 */
 		case Add:
-			
-
-			/*centerx = getIntent().getIntegerArrayListExtra("x");
-			centery = getIntent().getIntegerArrayListExtra("y");
-			radius = getIntent().getIntegerArrayListExtra("radius");
-			*/
-		
-			
-			float thirdX = ((mv.getHeight()/2)/2)/2;
-			float thirdY = ((mv.getWidth()/2)/2)/2;
-			 //drawCircle(x center, y center, radius, paint used);
-			CirclesDrawingView circ = new CirclesDrawingView(mv.getContext());
-			RectF r = new RectF();
-			r.set(20, 20, 20, 20);
-			
-			Circle cl = new Circle(mv.getContext());
-			
-			Circless asdf = new Circless();
-			int w = 0;
-			Paint qa = mPaint;
-			
-			/*while(w<=centerx.size()-1) {
-				if(w>=3) {
-					qa.setColor(Color.RED);
-				} else if(w<3) {
-					qa.setColor(Color.BLUE);
-				}
-				mv.mCanvas.drawCircle(centerx.get(w), centery.get(w), radius.get(w), qa);
-				w++;
-			}*/
-			
-			
-			
 			mv.invalidate();
-				
 			return true;
 		case ABOUT:
 			Intent i = new Intent(FingerPaintActivity.this, About.class);
