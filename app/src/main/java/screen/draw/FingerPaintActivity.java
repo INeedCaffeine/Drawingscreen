@@ -19,7 +19,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -39,7 +38,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class FingerPaintActivity extends Activity implements
@@ -51,19 +49,13 @@ public class FingerPaintActivity extends Activity implements
 
 	public static final int fieldPicture = R.drawable.rebuilt2026;
 	
-	boolean firsttime = false;
-	
-	ImageButton ft;
 	
 	boolean device = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_finger_paint);
-		/*getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-		getActionBar().hide();*/
-		try {
+				try {
 			if(ViewConfiguration.get(this).hasPermanentMenuKey()) {
 				getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 				getActionBar().hide();
@@ -76,17 +68,9 @@ public class FingerPaintActivity extends Activity implements
 		}
 		
 		
-		final String PREFS_NAME = "MyPrefsFile";
-
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		
-		
-		
 		mv = new MyView(this);
 		mv.setDrawingCacheEnabled(true);
-		mv.setBackgroundResource(fieldPicture);// set the back
-																// ground if you
-																// wish to
+		mv.setBackgroundResource(fieldPicture);
 		setContentView(mv);
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
@@ -97,45 +81,7 @@ public class FingerPaintActivity extends Activity implements
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
 		mPaint.setStrokeWidth(20);
 		mEmboss = new EmbossMaskFilter(new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f);
-		mBlur = new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL);
-		
-		
-		/* ft = new ImageButton(this);
-		 ft.setId(13);
-		 ft.setBackgroundResource(R.drawable.aerialassistfield);
-		 LayoutParams qwe = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		 ft.setLayoutParams(qwe);
-			if (settings.getBoolean("my_first_time", true)==false) {
-			    //the app is being launched for first time, do something        
-			    Log.d("Comments", "First time");
-
-			             // first time task
-			    	//Toast.makeText(this, "First", Toast.LENGTH_LONG).show();
-			    // record the fact that the app has been started at least once
-			    settings.edit().putBoolean("my_first_time", false).commit(); 
-			   
-			    ft.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						ft.setVisibility(View.GONE);
-					}
-				});
-			    //The overlay goes here
-			    
-			} else {
-				ft.setVisibility(View.GONE);
-				
-			}*/
-		
-		/*firsttime = true;
-		
-		getSharedPreferences("First", MODE_PRIVATE).edit().putBoolean("First", firsttime).commit();
-
-		firsttime = getSharedPreferences("First", MODE_PRIVATE).getBoolean("First", false);
-		 */
-		
+		mBlur = new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL);		
 		
 		
 		
@@ -145,8 +91,7 @@ public class FingerPaintActivity extends Activity implements
 	AlertDialog asdf;
 	 @Override
 	 public void onBackPressed() {
-		    //super.onBackPressed();   
-				if(saved) {
+					if(saved) {
 					this.finish();
 				} else if(!saved) {
 					 asdf = new AlertDialog.Builder(this)
@@ -166,9 +111,6 @@ public class FingerPaintActivity extends Activity implements
 				        }
 				     }).show();
 				}
-				
-				//getWindowManager().removeView(cdv);
-				
 		}
 
 
@@ -182,8 +124,6 @@ public class FingerPaintActivity extends Activity implements
 
 	public class MyView extends View {
 
-		//private static final float MINP = 0.25f;
-		//private static final float MAXP = 0.75f;
 		private Bitmap mBitmap;
 		private Canvas mCanvas;
 		private Path mPath;
@@ -269,19 +209,16 @@ public class FingerPaintActivity extends Activity implements
 			if(Q) {
 				mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 				mPaint.setAlpha(0x80);
-				//mPaint.setMaskFilter(MaskFilter.class.)
 				mPaint.setStrokeWidth(40);
 			} else {
-				mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SCREEN));
+				mPaint.setXfermode(null);
 			}
-			// mPaint.setMaskFilter(null);
 		}
 
 		@Override
 		public boolean onTouchEvent(MotionEvent event) {
 			float x = event.getX();
 			float y = event.getY();
-			System.out.println("X : " + x + "\tY : " + y);
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				touch_start(x, y);
@@ -328,17 +265,11 @@ public class FingerPaintActivity extends Activity implements
 		super.onCreateOptionsMenu(menu);
 
 		menu.add(0, COLOR_MENU_ID, 0, "Color").setShortcut('3', 'c');
-		//menu.add(0, EMBOSS_MENU_ID, 0, "Emboss").setShortcut('4', 's').setCheckable(true);
-		//menu.add(0, BLUR_MENU_ID, 0, "Blur").setShortcut('5', 'z').setCheckable(true);
 		menu.add(0, ERASE_MENU_ID, 0, "Erase").setShortcut('5', 'z').setCheckable(true);
 		menu.add(0, CLEAR_MENU_ID, 0, "Clear").setShortcut('5', 'z');
-		// menu.add(0, SRCATOP_MENU_ID, 0, "SrcATop").setShortcut('5', 'z');
 		menu.add(0, Save, 0, "Save").setShortcut('5', 'z');
 		menu.add(0, NEXT, 0, "Add Robots").setShortcut('3', 'c');
 		menu.add(0, ABOUT, 0, "About").setShortcut('5', 'z');
-        //menu.add(0, SCREEN, 0, "Change Screen").setShortcut('5', 'z');
-		//menu.add(0, Add, 0, "Add").setShortcut('5', 'z');
-		
 		/*if(device) {
 			menu.add(0,R.menu.finger_paint,0,"Red/White/Blue").setShortcut('5', 'z');
 		}*/
@@ -349,27 +280,8 @@ public class FingerPaintActivity extends Activity implements
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		
-		/*if(!Q) {
-			mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-			mPaint.setAlpha(0x80);
-			//mPaint.setMaskFilter(MaskFilter.class.)
-			mPaint.setStrokeWidth(40);
-			menu.getItem(ERASE_MENU_ID).setChecked(true);
-			//menu.getItem(R.id.erase).setChecked(true);
-			Q = true;
-		} else {
-			mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SCREEN));
-			mPaint.setStrokeWidth(20);
-			menu.getItem(ERASE_MENU_ID).setChecked(false);
-			//menu.getItem(R.id.erase).setChecked(false);
-			Q = false;
-		}*/
 		return true;
 	}
-	
-	
-	int robotpos = 0;
 	
 	
 	ArrayList<Integer> centerx = new ArrayList<Integer>();
@@ -409,19 +321,14 @@ public class FingerPaintActivity extends Activity implements
 			mPaint.setStrokeWidth(20);
 			return true;
 		case ERASE_MENU_ID:
-			
-			if(!Q) {
+			if (!Q) {
 				mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 				mPaint.setAlpha(0x80);
-				//mPaint.setMaskFilter(MaskFilter.class.)
 				mPaint.setStrokeWidth(40);
 				item.setChecked(true);
 				Q = true;
 			} else {
-				mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SCREEN));
-				mPaint.setStrokeWidth(20);
-				item.setChecked(false);
-				Q = false;
+				deactivateEraser(item);
 			}
 			return true;
 		case CLEAR_MENU_ID:
@@ -431,20 +338,7 @@ public class FingerPaintActivity extends Activity implements
 			centery.clear();
 			radius.clear();
 			
-			// mPaint.setXfermode(new
-			// PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-
-			// mPaint.setAlpha(0x80);
-			// mPaint.
-			/* mPaint. */
 			return true;
-			/*
-			 * case SRCATOP_MENU_ID:
-			 * 
-			 * mPaint.setXfermode(new
-			 * PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
-			 * mPaint.setAlpha(0x80); return true;
-			 */
 		case Add:
 			mv.invalidate();
 			return true;
@@ -453,24 +347,6 @@ public class FingerPaintActivity extends Activity implements
 			startActivity(i);
 		return true;
 		case NEXT:
-
-			
-				/*Intent q = new Intent(FingerPaintActivity.this, Test.class);
-				startActivity(q);*/
-				
-			Paint qas = mPaint;
-			Paint def = mPaint;
-			
-			//mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-			//mPaint.setAlpha(0x80);
-			/*mPaint.setColor(Color.BLACK);
-			int w1 = 0;
-			while(w1<=centerx.size()-1) {
-				System.out.println("X : ");// + x + "\tY : " + y);
-				mv.mCanvas.drawCircle(centerx.get(w1), centery.get(w1), radius.get(w1), mPaint);
-				
-				w1++;
-			}*/
 			Paint clearPaint = new Paint();
 			clearPaint.setStyle(Paint.Style.FILL);
 			clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -489,8 +365,7 @@ public class FingerPaintActivity extends Activity implements
 			
 				Intent j = new Intent(FingerPaintActivity.this,Test.class);  
 				j.putExtra("YES", work);
-				//j.putExtra("Image", mv.mBitmap);
-				work = false;
+					work = false;
 				startActivityForResult(j, 1);
 				
 			} else if(!work) {
@@ -500,19 +375,12 @@ public class FingerPaintActivity extends Activity implements
 				j.putIntegerArrayListExtra("radius", radius);
 				j.putExtra("YES", work);
 				
-				//clearCirc();
 				centerx.clear();
 				centery.clear();
 				radius.clear();
 				startActivityForResult(j, 1);
 				
 			}
-				/*centerx = getIntent().getIntegerArrayListExtra("x");
-				centery = getIntent().getIntegerArrayListExtra("y");
-				radius = getIntent().getIntegerArrayListExtra("radius");
-				*/
-			
-			
 		return true;
 		case R.id.bluecol:
 			deactivateEraser(item);
@@ -574,57 +442,7 @@ public class FingerPaintActivity extends Activity implements
 						        e.printStackTrace();
 						    }
 							
-							
-/*	
-							
-							Bitmap bitmap = mv.getDrawingCache();
-
-							String path = Environment
-									.getExternalStorageDirectory()
-									.getAbsolutePath();
-							File file = new File("/sdcard/" + name + ".png");
-							try {
-								if (!file.exists()) {
-									file.createNewFile();
-								}
-								FileOutputStream ostream = new FileOutputStream(
-										file);
-								bitmap.compress(CompressFormat.PNG, 10, ostream);
-								ostream.close();
-								mv.invalidate();
-							} catch (Exception e) {
-								e.printStackTrace();
-							} finally {
-
-								mv.setDrawingCacheEnabled(false);
-							}
-						*/
-							
-						
-							/*Process sh;
-							try {
-								sh = Runtime.getRuntime().exec("su", null,null);
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							OutputStream  os = sh.getOutputStream();
-							try {
-								os.write(("/system/bin/screencap -p " + "/sdcard/" + name + ".png").getBytes("ASCII"));
-							} catch (UnsupportedEncodingException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							try {
-								os.flush();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}*/
-						
+													
 						
 						
 						}
@@ -749,41 +567,10 @@ public class FingerPaintActivity extends Activity implements
 	  
 	  switch(requestCode) { 
 	    case (1) : { 
-	    	
-	    	
-	    	
-	    	
-	    	
-			/*
-			while(w<=centerx.size()-1) {
-				System.out.println("YOTYOYOYOOY");
-				//mPaint.setColor(Color.BLACK);
-				//mv.mCanvas.drawBitmap(mp, centerx.get(w), centery.get(w), mPaint);
-				int rad = 50;
-				while(rad>=0) {
-					System.out.println(rad);
-					mv.mCanvas.drawCircle(centerx.get(w), centery.get(w), rad, mPaint);
-					rad--;
-				}
-				
-				w++;
-			}*/
-			
-	    	  System.out.println("GOT IT");
 	    	  	centerx = data.getIntegerArrayListExtra("x");
 				centery = data.getIntegerArrayListExtra("y");
 				radius = data.getIntegerArrayListExtra("radius");
 				
-				
-				Canvas as = new Canvas();
-				//MyView ad = new MyView(getParent());
-				//CirclesDrawingView cdv = new CirclesDrawingView(this, this.getWallpaper());
-				//addContentView(view, params)
-				//LayoutParams lp = new LayoutParams(720, 1280);
-				//addContentView(cdv, lp);
-				//WindowManager.LayoutParams wlp = new WindowManager.LayoutParams();
-				//setContentView(cdv);
-				//getWindowManager().addView(cdv, wlp);
 				
 				w = 0;
 				Paint robotPaint = new Paint();
@@ -799,43 +586,10 @@ public class FingerPaintActivity extends Activity implements
 					w++;
 				}
 				
-				//mv.mCanvas.restoreToCount(as);
-				
 				mv.invalidate();
-	      // TODO Update your TextView.
-	      
 	      break; 
 	    } 
 	    }
 	}
-	
-	public void clearCirc() {
-		
-		
-		
-		
-		
-		/*int w = 0;
-		Paint qa = new Paint();
-		
-		qa = mPaint;
-		mPaint.setColor(Color.BLACK);
-		
-		//mPaint.setMaskFilter(MaskFilter.class.)
-		
-		//Paint def = mPaint;
-		while(w<=centerx.size()-1) {
-			if(w>=3) {
-				qa.setColor(Color.RED);
-			} else if(w<3) {
-				qa.setColor(Color.BLUE);
-			}
-			
-			mv.mCanvas.drawCircle(centerx.get(w), centery.get(w), radius.get(w), mPaint);
-			w++;
-		}*/
-		
-	}
-	
 	
 }
