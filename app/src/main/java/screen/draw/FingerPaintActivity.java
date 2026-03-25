@@ -783,19 +783,6 @@ public class FingerPaintActivity extends Activity implements
 	    	
 	    	
 	    	
-	    	mPaint.setColor(Color.BLACK);
-			
-			//mPaint.setMaskFilter(MaskFilter.class.)
-			
-			//Paint def = mPaint;
-	    	Paint qa = mPaint;
-			Paint def = mPaint;
-
-			mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-			//mPaint.setColor(Color.BLACK);
-			
-			mPaint.setAlpha(0x80);
-			Bitmap mp = BitmapFactory.decodeResource(getResources(), R.drawable.circleasdf);
 			/*
 			while(w<=centerx.size()-1) {
 				System.out.println("YOTYOYOYOOY");
@@ -840,9 +827,6 @@ public class FingerPaintActivity extends Activity implements
 					mv.mCanvas.drawCircle(centerx.get(w), centery.get(w), 30, robotPaint);
 					w++;
 				}
-				
-				qa = def;
-				mPaint = def;
 				
 				//mv.mCanvas.restoreToCount(as);
 				
