@@ -17,10 +17,5 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-    <!-- Theme with no action bar, used for drawing activities. -->
-    <style name="AppTheme.NoActionBar" parent="AppTheme">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-    </style>
 
 </resources>

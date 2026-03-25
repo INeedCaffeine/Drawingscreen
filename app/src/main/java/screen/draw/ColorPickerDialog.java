@@ -10,11 +10,8 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 
 public class ColorPickerDialog extends Dialog {
 
@@ -31,16 +28,17 @@ public class ColorPickerDialog extends Dialog {
 		private final int[] mColors;
 		private OnColorChangedListener mListener;
 
+		private static final int DEFAULT_SIZE = 240;
+
 		ColorPickerView(Context c, OnColorChangedListener l, int color) {
 			super(c);
 			mListener = l;
-			mColors = new int[] { 0xFFFF0000, 0xFFFF00FF, 0xFF0000FF,0xFF00FFFF, 0xFF00FF00, 0xFFFFFF00, 0xFFFF0000 };
+			mColors = new int[] { 0xFFFF0000, 0xFFFF00FF, 0xFF0000FF, 0xFF00FFFF, 0xFF00FF00, 0xFFFFFF00, 0xFFFF0000 };
 			Shader s = new SweepGradient(0, 0, mColors, null);
 
 			mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			mPaint.setShader(s);
 			mPaint.setStyle(Paint.Style.STROKE);
-			mPaint.setStrokeWidth(32);
 
 			mCenterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			mCenterPaint.setColor(color);
@@ -52,12 +50,15 @@ public class ColorPickerDialog extends Dialog {
 
 		@Override
 		protected void onDraw(Canvas canvas) {
-			float r = CENTER_X - mPaint.getStrokeWidth() * 0.5f;
+			int cx = getMeasuredWidth() / 2;
+			int centerRadius = cx / 4;
+			mPaint.setStrokeWidth(centerRadius);
+			float r = cx - mPaint.getStrokeWidth() * 0.5f;
 
-			canvas.translate(CENTER_X, CENTER_X);
+			canvas.translate(cx, cx);
 
 			canvas.drawOval(new RectF(-r, -r, r, r), mPaint);
-			canvas.drawCircle(0, 0, CENTER_RADIUS, mCenterPaint);
+			canvas.drawCircle(0, 0, centerRadius, mCenterPaint);
 
 			if (mTrackingCenter) {
 				int c = mCenterPaint.getColor();
@@ -68,7 +69,7 @@ public class ColorPickerDialog extends Dialog {
 				} else {
 					mCenterPaint.setAlpha(0x80);
 				}
-				canvas.drawCircle(0, 0,CENTER_RADIUS + mCenterPaint.getStrokeWidth(),mCenterPaint);
+				canvas.drawCircle(0, 0, centerRadius + mCenterPaint.getStrokeWidth(), mCenterPaint);
 
 				mCenterPaint.setStyle(Paint.Style.FILL);
 				mCenterPaint.setColor(c);
@@ -77,14 +78,12 @@ public class ColorPickerDialog extends Dialog {
 
 		@Override
 		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-			setMeasuredDimension(CENTER_X * 2, CENTER_Y * 2);
-			//x||y * size of window
+			int w = MeasureSpec.getSize(widthMeasureSpec);
+			int h = MeasureSpec.getSize(heightMeasureSpec);
+			int size = (w > 0 && h > 0) ? Math.min(w, h) : DEFAULT_SIZE;
+			setMeasuredDimension(size, size);
 		}
 
-		private static final int CENTER_X = 120;	//default 100
-		private static final int CENTER_Y = 120;	//default 100
-		private static final int CENTER_RADIUS = 32;	//default 32
-		
 		private int floatToByte(float x) {
 			int n = java.lang.Math.round(x);
 			return n;
@@ -155,9 +154,11 @@ public class ColorPickerDialog extends Dialog {
 
 		@Override
 		public boolean onTouchEvent(MotionEvent event) {
-			float x = event.getX() - CENTER_X;
-			float y = event.getY() - CENTER_Y;
-			boolean inCenter = java.lang.Math.sqrt(x * x + y * y) <= CENTER_RADIUS;
+			int cx = getMeasuredWidth() / 2;
+			int centerRadius = cx / 4;
+			float x = event.getX() - cx;
+			float y = event.getY() - cx;
+			boolean inCenter = java.lang.Math.sqrt(x * x + y * y) <= centerRadius;
 
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
@@ -189,7 +190,7 @@ public class ColorPickerDialog extends Dialog {
 					if (inCenter) {
 						mListener.colorChanged(mCenterPaint.getColor());
 					}
-					mTrackingCenter = false; 
+					mTrackingCenter = false;
 					invalidate();
 				}
 				break;
@@ -201,11 +202,8 @@ public class ColorPickerDialog extends Dialog {
 	public ColorPickerDialog(Context context, OnColorChangedListener listener,
 			int initialColor) {
 		super(context);
-
 		mListener = listener;
 		mInitialColor = initialColor;
-		
-		
 	}
 
 	@Override
@@ -217,11 +215,8 @@ public class ColorPickerDialog extends Dialog {
 				dismiss();
 			}
 		};
-		
-		
-		
+
 		setContentView(new ColorPickerView(getContext(), l, mInitialColor));
 		setTitle("Pick a Color");
-	
 	}
 }

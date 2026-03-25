@@ -1,7 +1,6 @@
 package screen.draw;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -21,6 +19,7 @@ import android.view.View;
 public class CirclesDrawingView extends View {
 
     private static final String TAG = "CirclesDrawingView";
+    private static final int ROBOT_COLOR_SPLIT = 3;
 
     /** Main bitmap */
     private Bitmap mBitmap = null;
@@ -47,7 +46,6 @@ public class CirclesDrawingView extends View {
     /** Paint to draw circles */
     private Paint mCirclePaint;
 
-    private final Random mRadiusGenerator = new Random();
     // Radius limit in pixels
     private final static int RADIUS_LIMIT = 30;
 
@@ -56,7 +54,7 @@ public class CirclesDrawingView extends View {
     /** All available circles */
     private ArrayList<CircleArea> mCircles = new ArrayList<CircleArea>(CIRCLES_LIMIT);
     private SparseArray<CircleArea> mCirclePointer = new SparseArray<CircleArea>(CIRCLES_LIMIT);
-    
+
     /**
      * Default constructor
      *
@@ -64,25 +62,21 @@ public class CirclesDrawingView extends View {
      */
     public CirclesDrawingView(final Context ct) {
         super(ct);
-        
         init(ct);
     }
-    
+
     public CirclesDrawingView(final Context ct, int back) {
         super(ct);
-        
         init(ct, back);
     }
-    
+
     public CirclesDrawingView(final Context ct, final AttributeSet attrs) {
         super(ct, attrs);
-
         init(ct);
     }
 
     public CirclesDrawingView(final Context ct, final AttributeSet attrs, final int defStyle) {
         super(ct, attrs, defStyle);
-
         init(ct);
     }
 
@@ -91,44 +85,37 @@ public class CirclesDrawingView extends View {
         mBitmap = BitmapFactory.decodeResource(ct.getResources(), FingerPaintActivity.fieldPicture);
 
         mCirclePaint = new Paint();
-
         mCirclePaint.setColor(Color.BLUE);
         mCirclePaint.setStrokeWidth(40);
         mCirclePaint.setStyle(Paint.Style.FILL);
     }
-    
+
     private void init(final Context ct, int back) {
         // Generate bitmap used for background
-    	
         mBitmap = BitmapFactory.decodeResource(ct.getResources(), back);
 
         mCirclePaint = new Paint();
-        
         mCirclePaint.setColor(Color.BLUE);
         mCirclePaint.setStrokeWidth(40);
         mCirclePaint.setStyle(Paint.Style.FILL);
     }
-    
+
     @Override
     public void onDraw(final Canvas canv) {
         // background bitmap to cover all area
         canv.drawBitmap(mBitmap, null, mMeasuredRect, null);
-        
-       int zx = -1;
-        
+
+        int zx = -1;
+
         for(CircleArea circle : mCircles) {
-        	zx++;
-        	if(zx>=3) {
-        		mCirclePaint.setColor(Color.RED);
-        		
-        		canv.drawCircle(circle.centerX, circle.centerY, circle.radius, mCirclePaint);
-        	} else {
-        		mCirclePaint.setColor(Color.BLUE);
-        		canv.drawCircle(circle.centerX, circle.centerY, circle.radius, mCirclePaint);
-        	}
-        	
-        	
-           
+            zx++;
+            if(zx >= ROBOT_COLOR_SPLIT) {
+                mCirclePaint.setColor(Color.RED);
+                canv.drawCircle(circle.centerX, circle.centerY, circle.radius, mCirclePaint);
+            } else {
+                mCirclePaint.setColor(Color.BLUE);
+                canv.drawCircle(circle.centerX, circle.centerY, circle.radius, mCirclePaint);
+            }
         }
     }
 
@@ -237,7 +224,6 @@ public class CirclesDrawingView extends View {
      */
     private void clearCirclePointer() {
         Log.w(TAG, "clearCirclePointer");
-
         mCirclePointer.clear();
     }
 
@@ -271,7 +257,7 @@ public class CirclesDrawingView extends View {
      */
     private CircleArea getTouchedCircle(final int xTouch, final int yTouch) {
         CircleArea touched = null;
-        						//mCircles
+
         for (CircleArea circle : mCircles) {
             if ((circle.centerX - xTouch) * (circle.centerX - xTouch) + (circle.centerY - yTouch) * (circle.centerY - yTouch) <= circle.radius * circle.radius) {
                 touched = circle;
@@ -281,88 +267,51 @@ public class CirclesDrawingView extends View {
 
         return touched;
     }
-    
+
     public ArrayList<CircleArea> getList() {
-    	return mCircles;
+        return mCircles;
     }
-    
+
     public ArrayList<Integer> getCX() {
-    	
-    	ArrayList<Integer> zxc = new ArrayList<Integer>();
-    	
-    	for(CircleArea cirles : mCircles) {
-    		
-    		zxc.add(cirles.centerX);
-    		//zxc.add(cirles.centerY);
-    		//zxc.add(cirles.radius);
-    		
-    	}
-    	
-    	
-    	
-    	return zxc;
+        ArrayList<Integer> zxc = new ArrayList<Integer>();
+        for(CircleArea cirles : mCircles) {
+            zxc.add(cirles.centerX);
+        }
+        return zxc;
     }
-    
+
     public ArrayList<Integer> getCY() {
-    	
-    	ArrayList<Integer> zxc = new ArrayList<Integer>();
-    	
-    	for(CircleArea cirles : mCircles) {
-    		
-    		//zxc.add(cirles.centerX);
-    		zxc.add(cirles.centerY);
-    		//zxc.add(cirles.radius);
-    		
-    	}
-    	
-    	
-    	
-    	return zxc;
+        ArrayList<Integer> zxc = new ArrayList<Integer>();
+        for(CircleArea cirles : mCircles) {
+            zxc.add(cirles.centerY);
+        }
+        return zxc;
     }
-    
-    
+
     public ArrayList<Integer> getRadius() {
-    	
-    	ArrayList<Integer> zxc = new ArrayList<Integer>();
-    	
-    	for(CircleArea cirles : mCircles) {
-    		
-    		//zxc.add(cirles.centerX);
-    		//zxc.add(cirles.centerY);
-    		zxc.add(cirles.radius);
-    		
-    	}
-    	
-    	
-    	
-    	return zxc;
+        ArrayList<Integer> zxc = new ArrayList<Integer>();
+        for(CircleArea cirles : mCircles) {
+            zxc.add(cirles.radius);
+        }
+        return zxc;
     }
-    
+
     public void setEvery(ArrayList<Integer> x, ArrayList<Integer> y, ArrayList<Integer> r) {
-    	
-    	int index = 0;
-    	mCircles.clear();
-    	for(int a : x) {
-    		mCircles.add(new CircleArea(a, y.get(index), r.get(index)));
-    		index++;
-    	}
-    	
-    	
-    	
+        int index = 0;
+        mCircles.clear();
+        for(int a : x) {
+            mCircles.add(new CircleArea(a, y.get(index), r.get(index)));
+            index++;
+        }
     }
-    
-    public void setImage(Drawable myImg) {
-    	//mBitmap = BitmapFactory.decodeResource(ct.getResources(), myImg);
-    	invalidate();
+
+    public void setImage() {
+        invalidate();
     }
-    
-    
+
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
         mMeasuredRect = new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight());
     }
-    
-    
 }
