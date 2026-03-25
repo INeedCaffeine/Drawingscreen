@@ -1,7 +1,6 @@
 package screen.draw;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 
 import android.content.Context;
@@ -59,8 +58,7 @@ public class CirclesDrawingView extends View {
     private static final int CIRCLES_LIMIT = 6;
 
     /** All available circles */
-    private HashSet<CircleArea> mCircles = new HashSet<CircleArea>(CIRCLES_LIMIT);
-    private ArrayList<CircleArea> mCircles1 = new ArrayList<CircleArea>(CIRCLES_LIMIT);
+    private ArrayList<CircleArea> mCircles = new ArrayList<CircleArea>(CIRCLES_LIMIT);
     private SparseArray<CircleArea> mCirclePointer = new SparseArray<CircleArea>(CIRCLES_LIMIT);
     
     /**
@@ -112,8 +110,6 @@ public class CirclesDrawingView extends View {
     private void init(final Context ct, int back) {
         // Generate bitmap used for background
     	
-    	
-    	
         mBitmap = BitmapFactory.decodeResource(ct.getResources(), back);
 
         mCirclePaint = new Paint();
@@ -150,7 +146,7 @@ public class CirclesDrawingView extends View {
         
        int zx = -1;
         
-        for(CircleArea circle : mCircles1) {
+        for(CircleArea circle : mCircles) {
         	zx++;
         	if(zx>=3) {
         		mCirclePaint.setColor(Color.RED);
@@ -187,9 +183,11 @@ public class CirclesDrawingView extends View {
 
                 // check if we've touched inside some circle
                 touchedCircle = obtainTouchedCircle(xTouch, yTouch);
-                touchedCircle.centerX = xTouch;
-                touchedCircle.centerY = yTouch;
-                mCirclePointer.put(event.getPointerId(0), touchedCircle);
+                if (touchedCircle != null) {
+                    touchedCircle.centerX = xTouch;
+                    touchedCircle.centerY = yTouch;
+                    mCirclePointer.put(event.getPointerId(0), touchedCircle);
+                }
 
                 invalidate();
                 handled = true;
@@ -205,10 +203,11 @@ public class CirclesDrawingView extends View {
 
                 // check if we've touched inside some circle
                 touchedCircle = obtainTouchedCircle(xTouch, yTouch);
-
-                mCirclePointer.put(pointerId, touchedCircle);
-                touchedCircle.centerX = xTouch;
-                touchedCircle.centerY = yTouch;
+                if (touchedCircle != null) {
+                    mCirclePointer.put(pointerId, touchedCircle);
+                    touchedCircle.centerX = xTouch;
+                    touchedCircle.centerY = yTouch;
+                }
                 invalidate();
                 handled = true;
                 break;
@@ -283,40 +282,10 @@ public class CirclesDrawingView extends View {
     private CircleArea obtainTouchedCircle(final int xTouch, final int yTouch) {
         CircleArea touchedCircle = getTouchedCircle(xTouch, yTouch);
 
-        /*if(mCircles.size()>=7) {
-        	
-        		mCircles.remove(mCircles.size());
-        		
-        }*/
-        
-        
-        
-        if (null == touchedCircle) {
+        if (null == touchedCircle && mCircles.size() < CIRCLES_LIMIT) {
             touchedCircle = new CircleArea(xTouch, yTouch, RADIUS_LIMIT);
-            while(mCircles1.size() >= 7) {
-            //if(mCircles1.size() >= 7) { 
-            	mCircles1.remove(mCircles1.size()-1);
-            //}
-        }
-            
-            if (mCircles1.size() == CIRCLES_LIMIT) {
-                Log.w(TAG, "Clear all circles, size is " + mCircles.size());
-                // remove first circle
-               // mCircles.clear();
-            } else if(mCircles1.size() == CIRCLES_LIMIT/2) {
-            	
-            	 mCircles.add(touchedCircle);
-            	 mCircles1.add(touchedCircle);
-            	 Log.w(TAG, "Clear all circles, size is " + mCircles.size());
-            	
-            } else {
-
-	            Log.w(TAG, "Added circle " + touchedCircle);
-	            mCircles.add(touchedCircle);
-	            mCircles1.add(touchedCircle);
-	            Log.w(TAG, "Clear all circles, size is " + mCircles.size());
-            
-            }
+            mCircles.add(touchedCircle);
+            Log.w(TAG, "Added circle " + touchedCircle);
         }
 
         return touchedCircle;
@@ -333,7 +302,7 @@ public class CirclesDrawingView extends View {
     private CircleArea getTouchedCircle(final int xTouch, final int yTouch) {
         CircleArea touched = null;
         						//mCircles
-        for (CircleArea circle : mCircles1) {
+        for (CircleArea circle : mCircles) {
             if ((circle.centerX - xTouch) * (circle.centerX - xTouch) + (circle.centerY - yTouch) * (circle.centerY - yTouch) <= circle.radius * circle.radius) {
                 touched = circle;
                 break;
@@ -343,19 +312,15 @@ public class CirclesDrawingView extends View {
         return touched;
     }
     
-    public HashSet<CircleArea> getList() {
+    public ArrayList<CircleArea> getList() {
     	return mCircles;
-    }
-    
-    public ArrayList<CircleArea> getList1() {
-    	return mCircles1;
     }
     
     public ArrayList<Integer> getCX() {
     	
     	ArrayList<Integer> zxc = new ArrayList<Integer>();
     	
-    	for(CircleArea cirles : mCircles1) {
+    	for(CircleArea cirles : mCircles) {
     		
     		zxc.add(cirles.centerX);
     		//zxc.add(cirles.centerY);
@@ -372,7 +337,7 @@ public class CirclesDrawingView extends View {
     	
     	ArrayList<Integer> zxc = new ArrayList<Integer>();
     	
-    	for(CircleArea cirles : mCircles1) {
+    	for(CircleArea cirles : mCircles) {
     		
     		//zxc.add(cirles.centerX);
     		zxc.add(cirles.centerY);
@@ -390,7 +355,7 @@ public class CirclesDrawingView extends View {
     	
     	ArrayList<Integer> zxc = new ArrayList<Integer>();
     	
-    	for(CircleArea cirles : mCircles1) {
+    	for(CircleArea cirles : mCircles) {
     		
     		//zxc.add(cirles.centerX);
     		//zxc.add(cirles.centerY);
@@ -406,10 +371,9 @@ public class CirclesDrawingView extends View {
     public void setEvery(ArrayList<Integer> x, ArrayList<Integer> y, ArrayList<Integer> r) {
     	
     	int index = 0;
-    	mCircles1.clear();
+    	mCircles.clear();
     	for(int a : x) {
     		mCircles.add(new CircleArea(a, y.get(index), r.get(index)));
-    		mCircles1.add(new CircleArea(a, y.get(index), r.get(index)));
     		index++;
     	}
     	

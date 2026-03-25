@@ -62,7 +62,7 @@ public class Test extends Activity {
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		ArrayList<CircleArea> ca = asdf.getList1();
+		ArrayList<CircleArea> ca = asdf.getList();
 		centerx.clear();
 		centery.clear();
 		radius.clear();
