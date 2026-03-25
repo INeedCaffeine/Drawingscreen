@@ -33,13 +33,10 @@ public class CirclesDrawingView extends View {
         int radius;
         int centerX;
         int centerY;
-        static int num = -1;
-
         CircleArea(int centerX, int centerY, int radius) {
             this.radius = radius;
             this.centerX = centerX;
             this.centerY = centerY;
-            num++;
         }
 
         @Override
