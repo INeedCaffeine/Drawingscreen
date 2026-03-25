@@ -315,6 +315,14 @@ public class FingerPaintActivity extends Activity implements
     AlertDialog asdf1;
 	boolean Q = false;
 	
+	private void deactivateEraser(MenuItem item) {
+		mPaint.setXfermode(null);
+		mPaint.setAlpha(0xFF);
+		mPaint.setStrokeWidth(20);
+		if (item != null) item.setChecked(false);
+		Q = false;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -507,28 +515,26 @@ public class FingerPaintActivity extends Activity implements
 			
 		return true;
 		case R.id.bluecol:
+			deactivateEraser(item);
 			mPaint.setColor(Color.BLUE);
 		return true;
 		case R.id.redcol:
+			deactivateEraser(item);
 			mPaint.setColor(Color.RED);
 		return true;
 		case R.id.whitecol:
+			deactivateEraser(item);
 			mPaint.setColor(Color.WHITE);
 		return true;
 		case R.id.erase:
-			
 			if(!Q) {
 				mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 				mPaint.setAlpha(0x80);
-				//mPaint.setMaskFilter(MaskFilter.class.)
 				mPaint.setStrokeWidth(40);
 				item.setChecked(true);
 				Q = true;
 			} else {
-				mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.ADD));
-				mPaint.setStrokeWidth(20);
-				item.setChecked(false);
-				Q = false;
+				deactivateEraser(item);
 			}
 		return true;
 		case Save:
