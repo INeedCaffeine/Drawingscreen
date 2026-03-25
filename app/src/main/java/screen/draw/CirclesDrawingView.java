@@ -16,7 +16,6 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewOverlay;
 
 
 public class CirclesDrawingView extends View {
@@ -75,12 +74,6 @@ public class CirclesDrawingView extends View {
         init(ct, back);
     }
     
-    public CirclesDrawingView(final Context ct, View back) {
-        super(ct);
-        
-        init(ct, back);
-    }
-
     public CirclesDrawingView(final Context ct, final AttributeSet attrs) {
         super(ct, attrs);
 
@@ -116,26 +109,6 @@ public class CirclesDrawingView extends View {
         mCirclePaint.setStyle(Paint.Style.FILL);
     }
     
-    private void init(final Context ct, View v) {
-        // Generate bitmap used for background
-    	
-        //mBitmap = BitmapFactory.decodeResource(ct.getResources(), R.drawable.aerialassistfield1);
-        
-    	View e = FingerPaintActivity.mv.getRootView();
-        
-    	//mBitmap = ViewOverlay.this;//BitmapFactory.decodeResource(ct.getResources(), v);
-    	
-    	mBitmap = e.getDrawingCache();
-    	
-        //mBitmap = back;
-
-        mCirclePaint = new Paint();
-        
-        mCirclePaint.setColor(Color.BLUE);
-        mCirclePaint.setStrokeWidth(40);
-        mCirclePaint.setStyle(Paint.Style.FILL);
-    }
-
     @Override
     public void onDraw(final Canvas canv) {
         // background bitmap to cover all area
@@ -390,27 +363,6 @@ public class CirclesDrawingView extends View {
 
         mMeasuredRect = new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight());
     }
-    
-    
-    public static Bitmap getBitmapFromView(View v) {
-    	
-    	Bitmap returnedBitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-    	
-    	Canvas canvas = new Canvas(returnedBitmap);
-    	
-    	Drawable bg = v.getBackground();
-    	if(bg != null) {
-    		bg.draw(canvas);
-    	} else {
-    		canvas.drawColor(Color.BLUE);
-    	}
-    	
-    	v.draw(canvas);
-    	
-    	return returnedBitmap;
-    	
-    }
-    
     
     
 }

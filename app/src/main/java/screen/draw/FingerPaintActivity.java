@@ -46,7 +46,7 @@ import android.widget.LinearLayout;
 public class FingerPaintActivity extends Activity implements
 		ColorPickerDialog.OnColorChangedListener {
 
-	public static MyView mv;
+	public MyView mv;
 	AlertDialog dialog;
 	boolean saved = false;
 
