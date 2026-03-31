@@ -300,9 +300,6 @@ public class FingerPaintActivity extends Activity implements
 				j.putIntegerArrayListExtra("y", centery);
 				j.putIntegerArrayListExtra("radius", radius);
 				j.putExtra("YES", work);
-				centerx.clear();
-				centery.clear();
-				radius.clear();
 				startActivityForResult(j, 1);
 			}
 			return true;
