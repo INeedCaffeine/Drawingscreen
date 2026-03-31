@@ -56,7 +56,6 @@ public class FingerPaintActivity extends Activity implements
 		}
 
 		mv = new MyView(this);
-		mv.setDrawingCacheEnabled(true);
 		mv.setBackgroundResource(fieldPicture);
 		setContentView(mv);
 		mPaint = new Paint();
@@ -321,8 +320,9 @@ public class FingerPaintActivity extends Activity implements
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
 							String name = input.getText().toString();
-							mv.setDrawingCacheEnabled(true);
-							Bitmap bitmap = mv.getDrawingCache();
+							Bitmap bitmap = Bitmap.createBitmap(mv.getWidth(), mv.getHeight(), Bitmap.Config.ARGB_8888);
+							Canvas saveCanvas = new Canvas(bitmap);
+							mv.draw(saveCanvas);
 							ContentValues values = new ContentValues();
 							values.put(MediaStore.Images.Media.DISPLAY_NAME, name + ".png");
 							values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
