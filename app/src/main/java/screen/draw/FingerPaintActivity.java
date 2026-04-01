@@ -319,6 +319,7 @@ public class FingerPaintActivity extends Activity implements
 							String name = input.getText().toString();
 							Bitmap bitmap = Bitmap.createBitmap(mv.getWidth(), mv.getHeight(), Bitmap.Config.ARGB_8888);
 							Canvas saveCanvas = new Canvas(bitmap);
+							saveCanvas.drawColor(Color.WHITE);
 							mv.draw(saveCanvas);
 							ContentValues values = new ContentValues();
 							values.put(MediaStore.Images.Media.DISPLAY_NAME, name + ".png");
